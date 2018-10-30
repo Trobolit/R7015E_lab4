@@ -31,7 +31,11 @@ legend(strrep(AllDataNames,'_',' '));
 hold off;
 
 
-
-
-
-
+%% Examine linear trends in data
+trends = nan(NumSignals, 2);
+for i=1:NumSignals
+    trends(i,:) = polyfit([1:N]',AllData(:,i), 1);
+end
+disp(["slope","constant","data"])
+disp([trends,AllDataNames']);
+disp("We hereby assume that slopes are insignificant, and only detrend by removing means in later steps");
