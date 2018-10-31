@@ -1,4 +1,4 @@
-% main script file, run this first.
+%% main script file, run this first.
 
 loadData;
 
@@ -25,7 +25,11 @@ AllDataNames = ["boom_angle_deg", "boom_speed_deg_per_sec", ...
 figure();
 hold on;
 for i=1:NumSignals
-    plot(AllData(:,i));
+    if i==5
+        plot(100*AllData(:,i));
+    else
+        plot(AllData(:,i));
+    end
 end
 legend(strrep(AllDataNames,'_',' '));
 hold off;
