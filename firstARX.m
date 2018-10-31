@@ -88,8 +88,8 @@ histogram(engine_speed_rps- sim(arx10101, u))
 testIndexes = 1:10728;
 valIndexes = 10729:14002;
 
-ze = iddata(engine_speed_rps(testIndexes,1),AllData(testIndexes,[1:6,8:end]),1);
-zv = iddata(engine_speed_rps(valIndexes,1),AllData(valIndexes,[1:6,8:end]),1);
+ze = iddata(y(testIndexes,1),AllData(testIndexes,[1:6,8:end]),1);
+zv = iddata(y(valIndexes,1),AllData(valIndexes,[1:6,8:end]),1);
 %Generate model-order combinations for:
 na = 1;
 nb = 0:2;
@@ -107,8 +107,21 @@ disp('slectring order etc');
 order = selstruc(V,0);
 
 %Estimate an ARX model of selected order.
-M = arx(ze,order);
+M = arx(ze,order)
 
 
+% Without removal of mean in y
 % When nb 0:1, na 1, nk 1 =>  Polynomial orders:   na=1   nb=[1 0 1 1 1 1 1 1 0 0 1 1]   nk=[1 1 1 1 1 1 1 1 1 1 1 1]
+% Fit to estimation data: 92.11% (prediction focus), FPE: 0.09895, MSE: 0.09875   
 % nb 0:2 (took time!) =>      Polynomial orders:   na=1   nb=[0 2 2 2 2 2 2 2 2 2 2 2]   nk=[1 1 1 1 1 1 1 1 1 1 1 1]
+% Fit to estimation data: 92.5% (prediction focus),  FPE: 0.08966, MSE: 0.08925 
+
+% Special: na = 1; nb = 0:2; nk = 1;
+%   NN = struc(na, 0,nb,0,nb,nb,0:4,2:4,2:4,0,nb,nb,nb, nk,nk,nk,nk,nk,nk,nk,nk,nk,nk,nk,nk);
+% Polynomial orders:   na=1   nb=[0 2 0 2 2 4 3 4 0 1 2 2]   nk=[1 1 1 1 1 1 1 1 1 1 1 1]
+% Fit to estimation data: 92.35% (prediction focus), FPE: 0.09341, MSE: 0.09294 
+
+
+% With removal of mean in y
+% When nb 0:1, na1, nk 1 => Polynomial orders:   na=1   nb=[0 0 1 1 1 1 1 1 1 1 1 1]   nk=[1 1 1 1 1 1 1 1 1 1 1 1]
+% Fit to estimation data: 92.31% (prediction focus), FPE: 0.09422, MSE: 0.09401
