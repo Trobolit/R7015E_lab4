@@ -24,12 +24,13 @@ disp('slectring order etc');
 order = selstruc(V,0);
 
 %Estimate an ARX model of selected order.
-M = arx(ze,order)
+M = arx(ze,order) %,'IntegrateNoise',1
 
 % na 1, nb 0:1, nk 1 => Polynomial orders:   na=1   nb=[1 0 1 0 1 1 1 1 0 0 1 1]   nk=[1 1 1 1 1 1 1 1 1 1 1 1]
 % Fit to estimation data: 93.14% (prediction focus), FPE: 0.07482, MSE: 0.07468 
 % same, but nb 0:2 =>   Polynomial orders:   na=1   nb=[2 2 2 2 2 2 1 2 2 1 2 1]   nk=[1 1 1 1 1 1 1 1 1 1 1 1]
 % Fit to estimation data: 93.58% (prediction focus), FPE: 0.06578, MSE: 0.06549  
-
+% na 1:4, otherw. same=> Polynomial orders:   na=4   nb=[0 2 2 1 2 1 1 0 2 2 2 2]   nk=[1 1 1 1 1 1 1 1 1 1 1 1]
+% Fit to estimation data: 95.16% (prediction focus), FPE: 0.03739, MSE: 0.03722
 
 autocorr(y - sim(M,u ), 'NumLags',1000)
