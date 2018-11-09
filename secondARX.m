@@ -8,7 +8,7 @@ valIndexes = 10729:14001;
 ze = iddata(y(testIndexes,1),u(testIndexes,:),1);
 zv = iddata(y(valIndexes,1),u(valIndexes,:),1);
 %Generate model-order combinations for:
-na = 1:4;
+na = 4;
 nb = 0:2;
 nk = 1;
 disp('starting struc');
@@ -33,4 +33,14 @@ M = arx(ze,order) %,'IntegrateNoise',1
 % na 1:4, otherw. same=> Polynomial orders:   na=4   nb=[0 2 2 1 2 1 1 0 2 2 2 2]   nk=[1 1 1 1 1 1 1 1 1 1 1 1]
 % Fit to estimation data: 95.16% (prediction focus), FPE: 0.03739, MSE: 0.03722
 
-autocorr(y - sim(M,u ), 'NumLags',1000)
+autocorr(y(valIndexes,:) - sim(M,u(valIndexes,:)),1000)
+%%
+
+figure();
+hold on;
+plot(y(valIndexes,:));
+plot(sim(M,u(valIndexes,:)));
+plot(sim(amx4041,u(valIndexes,:)));
+legend('y','arx','armax');
+
+hold off;
